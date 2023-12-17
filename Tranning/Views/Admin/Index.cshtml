@@ -1,0 +1,124 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Tranning.Models.UserModel
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    bool statusAdd = Convert.ToBoolean(TempData["SaveStatus"]);
+    bool statusUpdate = Convert.ToBoolean(TempData["UpdateStatus"]);
+}
+
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <h1 class="display-4">Welcome Traning System BTEC FPT - Admin</h1>
+        <a class="btn btn-primary btn-sm" href="@Url.Action("Upload","Admin")"> Add User </a>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    <input style="padding:0 4px 3px 16px; height:35px; border-radius:40px 0 0 40px; border: solid 1px black; width:500px" type="text" name="SearchString" value="@ViewData["CuerrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0" style="border-radius:0 40px 40px 0; border: 1px solid black; height:35px">Search</button>
+                    <a asp-action="Index">Back to full list</a>
+                </p>
+            </div>
+        </form>
+        <hr />
+
+        @if (TempData["UpdateStatus"] != null)
+        {
+            @if (statusUpdate)
+            {
+                <div class="text-success my-2"> Update Successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2"> Update Failure</div>
+            }
+        }
+
+        @if (TempData["saveStatus"] != null)
+        {
+            @if (statusAdd)
+            {
+                <div class="text-success my-2"> Add Successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2"> Add Failure</div>
+            }
+        }
+
+        <table class="table-responsive table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ROLE</th>
+                    <th>EXTRA CODE</th>
+                    <th>USERNAME</th>
+                    <th>PASSWORD</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>ADDRESS</th>
+                    <th>GENDER</th>
+                    <th>BIRTHDAY</th>
+                    <th>AVATAR</th>
+                    <th>LAST LOGIN</th>
+                    <th>LAST LOGOUT</th>
+                    <th>STATUS</th>
+                    <th>CREATED AT</th>
+                    <th>UPDATED AT</th>
+                    <th>FULL NAME</th>
+                    <th>EDUCATION</th>
+                    <th>PROGRAMMING LANGUAGE</th>
+                    <th>TOEIC SCORE</th>
+                    <th>EXPERIENCE</th>
+                    <th>DEPARTMENT</th>
+                    <th colspan="2" width="5%">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserDetailLists)
+                {
+                    <tr class="tr three-row">
+                        <td>@item.id</td>
+                        <td>@item.role_id</td>
+                        <td>@item.extra_code</td>
+                        <td>@item.username</td>
+                        <td>@item.password</td>
+                        <td>@item.email</td>
+                        <td>@item.phone</td>
+                        <td>@item.address</td>
+                        <td>
+                            @if (@item.gender == 0)
+                            {
+                                <text>Male</text>
+                            }
+                            else if (@item.gender == 1)
+                            {
+                                <text>Female</text>
+                            }
+                        </td>
+                        <td>@item.birthday</td>
+                        <td>@item.avatar</td>
+                        <td>@item.last_login</td>
+                        <td>@item.last_logout</td>
+                        <td>@item.created_at</td>
+                        <td>@item.updated_at</td>
+                        <td>@item.full_name</td>
+                        <td>@item.education</td>
+                        <td>@item.programming_laguague</td>
+                        <td>@item.toeic_score</td>
+                        <td>@item.experience</td>
+                        <td>@item.department</td>
+                        <td>
+                            <a class="btn btn-info btn-sm" href="@Url.Action("Update","Admin", new { id = @item.id })">Edit</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete","Admin", new { id = @item.id })">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

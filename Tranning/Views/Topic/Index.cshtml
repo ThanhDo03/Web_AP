@@ -1,0 +1,106 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Tranning.Models.TopicModel
+@{
+    ViewData["Title"] = "Topic page";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    bool statusAdd = Convert.ToBoolean(TempData["saveStatus"]);
+    bool statusUpdate = Convert.ToBoolean(TempData["UpdateStatus"]);
+}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h4 class="display-6">
+            List Topics
+        </h4>
+        <a class="btn btn-primary btn-sm" href="@Url.Action("Add","Topic")"> Add Topic </a>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    <input style="padding:0 4px 3px 16px; height:35px; border-radius:40px 0 0 40px; border: solid 1px black; width:500px" type="text" name="SearchString" value="@ViewData["CuerrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0" style="border-radius:0 40px 40px 0; border: 1px solid black; height:35px">Search</button>
+                    <a asp-action="Index">Back to full list</a>
+                </p>
+            </div>
+        </form>
+        @if (TempData["UpdateStatus"] != null)
+        {
+            @if (statusUpdate)
+            {
+                <div class="text-success my-2"> Update Successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2"> Update Failure</div>
+            }
+        }
+
+        @if (TempData["saveStatus"] != null)
+        {
+            @if (statusAdd)
+            {
+                <div class="text-success my-2"> Add Successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2"> Add Failure</div>
+            }
+        }
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>COURSE</th>
+                    <th>DESCRIPTION</th>
+                    <th>VIDEO</th>
+                    <th>DOCUMENTS</th>
+                    <th>FILE</th>
+                    <th>STATUS</th>
+                    <th>CREATED AT</th>
+                    <th>UPDATED AT</th>
+                    <th colspan="2" width="5%">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TopicDetailLists)
+                {
+                    <tr>
+                        <td>@item.id</td>
+                        <td>@item.name</td>
+                        <td>@item.courseName</td>
+                        <td>@item.description</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.videos))
+                            {
+                                <video width="320" height="240" controls autoplay muted loop>
+                                    <source src="~/Uploads/videos/@item.videos">
+                                    Your browser does not support the video tag.
+                                </video>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.documents))
+                            {
+                                <a href="~/uploads/images/@item.documents" download>Document (Download)</a>
+                            }
+                        </td>
+                        <td style="display: flex; justify-content: center; align-items: center;">
+                            @if (!string.IsNullOrEmpty(item.attach_file))
+                            {
+                                <img class="img-fluid" src="~/uploads/images/@item.attach_file" />
+                            }
+                        </td>
+                        <td>@item.status</td>
+                        <td>@item.created_at</td>
+                        <td>@item.updated_at</td>
+                        <td>
+                            <a class="btn btn-info btn-sm" href="@Url.Action("Update","Topic", new {id = @item.id})">Edit</a>
+                            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete","Topic", new {id = @item.id})">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

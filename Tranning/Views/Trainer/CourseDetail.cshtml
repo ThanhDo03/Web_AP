@@ -1,0 +1,42 @@
+﻿﻿@{
+    ViewData["Title"] = "Course Detail Page";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <h4 class="display-6">
+            @ViewBag.Stores.name
+        </h4>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    Find by name : <input class="border border-primary rounded" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0">Search</button>
+                    <a href="@Url.Action("CourseDetail","Trainer", new { id = ViewBag.Stores.id })"> Back to full list</a>
+                    <a href="@Url.Action("CategoryDetail","Trainer", new { id = ViewBag.Stores.category_id })" style="float: right" class="btn btn-secondary">Back</a>
+                </p>
+            </div>
+        </form>
+        <hr />
+        <div class="d-flex">
+            @if (Model != null && (Model.TopicDetailLists == null || Model.TopicDetailLists.Count != 0))
+            {
+                @foreach (var item in Model.TopicDetailLists)
+                {
+                    <div class="card border border-primary rounded" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.name</h5>
+                            <p class="card-text">@item.description</p>
+                            <a href="@Url.Action("TopicDetail","Trainer", new { id = @item.id })" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h1>This course does not have any topic</h1>
+            }
+        </div>
+    </div>
+</div>

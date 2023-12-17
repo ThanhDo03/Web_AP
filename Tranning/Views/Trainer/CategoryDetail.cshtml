@@ -1,0 +1,45 @@
+﻿﻿@{
+    ViewData["Title"] = "Category Detail Page";
+    //Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <h4 class="display-6">
+            @ViewBag.Stores.name
+        </h4>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    Find by name : <input class="border border-primary rounded" type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0">Search</button>
+                    <a href="@Url.Action("CategoryDetail","Trainer", new { id = ViewBag.Stores.id })"> Back to full list</a>
+                    <a href="@Url.Action("Index", new { id = ViewBag.Stores.id })" style="float: right" class="btn btn-secondary">Back</a>
+                </p>
+            </div>
+        </form>
+        <hr />
+        <div class="d-flex">
+            @if (Model != null && (Model.CourseDetailLists == null || Model.CourseDetailLists.Count != 0))
+            {
+                @foreach (var item in Model.CourseDetailLists)
+                {
+                    <div class="card border border-primary rounded" style="width: 18rem;">
+                        <img class="card-img-top" src="~/uploads/images/@item.avatar" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.name</h5>
+                            <p class="card-text">@item.description</p>
+                            <p class="card-text">Start date: @(DateOnly.FromDateTime(item.start_date))</p>
+                            <p class="card-text">End date: @(item.end_date != null ? DateOnly.FromDateTime(item.end_date) : (DateOnly?)null)</p>
+                            <a href="@Url.Action("CourseDetail","Trainer", new { id = @item.id })" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h1>This category does not have any course</h1>
+            }
+        </div>
+    </div>
+</div>

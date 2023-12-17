@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Trainer Page";
+    bool statusAdd = Convert.ToBoolean(TempData["saveStatus"]);
+}
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <h4 class="display-6">
+            Home
+        </h4>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    <input style="padding:0 4px 3px 16px; height:35px; border-radius:40px 0 0 40px; border: solid 1px black; width:500px" type="text" name="SearchString" value="@ViewData["CuerrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0" style="border-radius:0 40px 40px 0; border: 1px solid black; height:35px">Search</button>
+                    <a asp-action="Index">Back to full list</a>
+                </p>
+            </div>
+        </form>
+        <hr />
+        <div class="d-flex">
+
+            @foreach (var item in Model.CategoryDetailLists)
+            {
+                <div class="card border border-primary rounded" style="width: 18rem;">
+                    <img class="card-img-top" src="~/uploads/images/@item.icon" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.name</h5>
+                        <p class="card-text">@item.description</p>
+                        <a href="@Url.Action("CategoryDetail","Trainer", new { id = @item.id })" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
